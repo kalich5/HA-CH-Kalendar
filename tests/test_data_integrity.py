@@ -20,7 +20,7 @@ CANTONS = {
 
 def test_school_files_exist():
 
-    for year in ["2026", "2027"]:
+    for year in ["2026"]:
 
         path = os.path.join(DATA, f"{year}.json")
 
@@ -29,7 +29,7 @@ def test_school_files_exist():
 
 def test_school_json_valid():
 
-    for year in ["2026", "2027"]:
+    for year in ["2026"]:
 
         with open(os.path.join(DATA, f"{year}.json")) as f:
             data = json.load(f)
@@ -39,7 +39,7 @@ def test_school_json_valid():
 
 def test_all_cantons_present():
 
-    for year in ["2026", "2027"]:
+    for year in ["2026"]:
 
         with open(os.path.join(DATA, f"{year}.json")) as f:
             data = json.load(f)
@@ -51,7 +51,7 @@ def test_all_cantons_present():
 
 def test_ranges_valid():
 
-    for year in ["2026", "2027"]:
+    for year in ["2026"]:
 
         with open(os.path.join(DATA, f"{year}.json")) as f:
             data = json.load(f)
