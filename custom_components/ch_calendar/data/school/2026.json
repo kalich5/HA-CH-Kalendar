@@ -1,0 +1,37 @@
+{
+  "zh": [
+    {
+      "name": "Spring holidays",
+      "start": "2026-04-18",
+      "end": "2026-05-03"
+    },
+    {
+      "name": "Summer holidays",
+      "start": "2026-07-11",
+      "end": "2026-08-16"
+    },
+    {
+      "name": "Autumn holidays",
+      "start": "2026-10-03",
+      "end": "2026-10-18"
+    },
+    {
+      "name": "Christmas holidays",
+      "start": "2026-12-19",
+      "end": "2027-01-03"
+    }
+  ],
+
+  "ag": [
+    {
+      "name": "Sport holidays",
+      "start": "2026-02-07",
+      "end": "2026-02-22"
+    },
+    {
+      "name": "Summer holidays",
+      "start": "2026-07-04",
+      "end": "2026-08-09"
+    }
+  ]
+}
