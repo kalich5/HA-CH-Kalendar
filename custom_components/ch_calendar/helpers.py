@@ -27,7 +27,7 @@ class CalendarData:
         await self._load_school_holidays()
 
 
-    # ---------- SVÁTKY (ICS) ----------
+    # ---------- STATE HOLIDAYS ----------
 
     async def _load_holidays(self):
 
@@ -35,20 +35,22 @@ class CalendarData:
 
         filename = f"holidays_{self.canton}_{self.year}.ics"
 
-        path = os.path.join(
-            base, "data", "holidays", filename
-        )
+        path = os.path.join(base, "data", "holidays", filename)
 
         if not os.path.exists(path):
             _LOGGER.warning("Holiday file not found: %s", path)
             return
 
+
         with open(path, "r", encoding="utf-8") as f:
             cal = Calendar(f.read())
 
+
         self.holidays = []
 
+
         for ev in cal.events:
+
             self.holidays.append({
                 "name": ev.name,
                 "start": ev.begin.date(),
@@ -56,7 +58,7 @@ class CalendarData:
             })
 
 
-    # ---------- ŠKOLNÍ PRÁZDNINY (JSON) ----------
+    # ---------- SCHOOL HOLIDAYS ----------
 
     async def _load_school_holidays(self):
 
@@ -64,20 +66,22 @@ class CalendarData:
 
         filename = f"{self.year}.json"
 
-        path = os.path.join(
-            base, "data", "school", filename
-        )
+        path = os.path.join(base, "data", "school", filename)
 
         if not os.path.exists(path):
             _LOGGER.warning("School file not found: %s", path)
             return
 
+
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
 
+
         self.school_holidays = []
 
+
         canton_data = data.get(self.canton, [])
+
 
         for item in canton_data:
 
@@ -88,7 +92,7 @@ class CalendarData:
             })
 
 
-    # ---------- KONTROLY ----------
+    # ---------- HELPERS ----------
 
     def is_holiday(self, day: date) -> bool:
 

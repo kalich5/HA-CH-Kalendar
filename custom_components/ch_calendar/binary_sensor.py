@@ -33,4 +33,7 @@ class CHWorkdaySensor(BinarySensorEntity):
         if today.weekday() >= 5:
             return False
 
+        if self.data.is_school_holiday(today):
+            return False
+
         return not self.data.is_holiday(today)

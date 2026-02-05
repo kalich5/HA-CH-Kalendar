@@ -33,7 +33,6 @@ class CHTodaySensor(Entity):
         if self.data.is_school_holiday(today):
             return "school_holiday"
 
-
         if self.data.is_holiday(today):
             return "holiday"
 

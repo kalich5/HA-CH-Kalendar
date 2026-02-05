@@ -1,7 +1,6 @@
 import voluptuous as vol
 from homeassistant import config_entries
 
-
 DOMAIN = "ch_calendar"
 
 
@@ -47,16 +46,10 @@ class CHCalendarConfigFlow(
                 data=user_input
             )
 
-
         return self.async_show_form(
             step_id="user",
             data_schema=vol.Schema({
-
-                vol.Required("canton"):
-                    vol.In(CANTONS),
-
-                vol.Required("year", default=2026):
-                    int,
-
+                vol.Required("canton"): vol.In(CANTONS),
+                vol.Required("year", default=2026): int
             }),
         )
