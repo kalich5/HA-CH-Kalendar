@@ -1,0 +1,14 @@
+{
+  "domain": "ch_calendar",
+  "name": "CH Kalendar",
+  "version": "0.2.0",
+  "documentation": "https://github.com/kalich5/HA-CH-Kalendar",
+  "dependencies": [],
+  "codeowners": ["@kalich5"],
+  "config_flow": true,
+  "requirements": [
+    "holidays",
+    "ics",
+    "python-dateutil"
+  ]
+}
