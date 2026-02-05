@@ -1,47 +1,85 @@
-import holidays
-from ics import Calendar
+import os
+import logging
 from datetime import date
+from ics import Calendar
 
-from .cantons import CH_CANTONS, get_ics_url
+_LOGGER = logging.getLogger(__name__)
 
 
 class CalendarData:
 
     def __init__(self, hass, entry):
+
         self.hass = hass
         self.entry = entry
 
         self.canton = entry.data["canton"]
-        self.canton_name = CH_CANTONS[self.canton][0]
+        self.year = entry.data["year"]
 
-        self.holiday_data = holidays.CH(prov=self.canton)
-        self.school_data = []
+        self.holidays = []
 
 
     async def async_initialize(self):
-        await self._load_school_holidays()
+
+        await self._load_holidays()
 
 
-    async def _load_school_holidays(self):
+    async def _load_holidays(self):
 
-        url = get_ics_url(self.canton)
+        base = os.path.dirname(__file__)
 
-        session = self.hass.helpers.aiohttp_client.get_clientsession()
+        filename = f"holidays_{self.canton}_{self.year}.ics"
 
-        async with session.get(url) as resp:
-            ics_text = await resp.text()
+        path = os.path.join(
+            base,
+            "data",
+            "holidays",
+            filename
+        )
 
-        calendar = Calendar(ics_text)
+        if not os.path.exists(path):
 
-        self.school_data = list(calendar.events)
+            _LOGGER.warning(
+                "Holiday file not found: %s", path
+            )
+            return
+
+
+        with open(path, "r", encoding="utf-8") as f:
+
+            cal = Calendar(f.read())
+
+
+        self.holidays = []
+
+
+        for ev in cal.events:
+
+            self.holidays.append({
+                "name": ev.name,
+                "start": ev.begin.date(),
+                "end": ev.end.date()
+            })
 
 
     def is_holiday(self, day: date) -> bool:
-        return day in self.holiday_data
 
+        for ev in self.holidays:
 
-    def is_school_holiday(self, day: date) -> bool:
-        for ev in self.school_data:
-            if ev.begin.date() <= day <= ev.end.date():
+            if ev["start"] <= day <= ev["end"]:
                 return True
+
         return False
+
+
+    def get_events(self, start, end):
+
+        result = []
+
+        for ev in self.holidays:
+
+            if ev["start"] <= end and ev["end"] >= start:
+
+                result.append(ev)
+
+        return result

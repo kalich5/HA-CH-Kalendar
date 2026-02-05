@@ -1,43 +1,42 @@
 from homeassistant.components.calendar import CalendarEntity
 from datetime import timedelta
 
+from . import DOMAIN
+
+
+async def async_setup_entry(hass, entry, async_add_entities):
+
+    data = hass.data[DOMAIN][entry.entry_id]
+
+    async_add_entities([CHCalendarEntity(data)])
+
+
 
 class CHCalendarEntity(CalendarEntity):
 
     def __init__(self, data):
+
         self.data = data
 
 
     @property
     def name(self):
-        return f"ch_calendar_{self.data.canton.lower()}"
+
+        return f"ch_calendar_{self.data.canton}"
 
 
     async def async_get_events(self, hass, start_date, end_date):
 
         events = []
 
-        # státní svátky
-        for d, name in self.data.holiday_data.items():
 
-            if start_date <= d <= end_date:
-                events.append({
-                    "start": d,
-                    "end": d + timedelta(days=1),
-                    "name": name
-                })
+        for ev in self.data.get_events(start_date, end_date):
 
-        # školní prázdniny
-        for ev in self.data.school_data:
+            events.append({
+                "start": ev["start"],
+                "end": ev["end"] + timedelta(days=1),
+                "summary": ev["name"],
+            })
 
-            ev_start = ev.begin.date()
-            ev_end = ev.end.date()
-
-            if ev_start <= end_date and ev_end >= start_date:
-                events.append({
-                    "start": ev_start,
-                    "end": ev_end + timedelta(days=1),
-                    "name": ev.name
-                })
 
         return events
