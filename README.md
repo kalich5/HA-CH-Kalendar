@@ -45,7 +45,7 @@ Canton-specific: Geneva Fast (GE), Federal Fast Monday (VD), Knabenschiessen (ZH
 ### HACS (recommended)
 1. Open HACS in Home Assistant
 2. Click "Integrations" → three dots → "Custom repositories"
-3. Add URL: `https://github.com/your-repo/HA-CH-Calendar`
+3. Add URL: `https://github.com/kalich5/ch_calendar`
 4. Category: "Integration"
 5. Search for "CH School & Work Calendar" and install
 6. Restart Home Assistant
